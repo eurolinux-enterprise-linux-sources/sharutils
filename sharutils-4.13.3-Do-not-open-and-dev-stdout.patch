@@ -1,0 +1,74 @@
+From 49857a3ee79226ce870607104f7ef28bacae3f57 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20P=C3=ADsa=C5=99?= <ppisar@redhat.com>
+Date: Wed, 23 Jan 2013 14:06:50 +0100
+Subject: [PATCH] Do not open - and /dev/stdout
+
+Ported from 4.13.4pre2.
+<https://bugzilla.redhat.com/show_bug.cgi?id=901895>
+
+I have duplicated the autogen code to C because the build system does
+not run autogen.
+---
+ src/uudecode-opts.c   | 17 ++++++++++++++++-
+ src/uudecode-opts.def | 17 ++++++++++++++++-
+ 2 files changed, 32 insertions(+), 2 deletions(-)
+
+diff --git a/src/uudecode-opts.c b/src/uudecode-opts.c
+index 19f4ee1..33ebe2f 100644
+--- a/src/uudecode-opts.c
++++ b/src/uudecode-opts.c
+@@ -385,7 +385,22 @@ doOptOutput_File(tOptions* pOptions, tOptDesc* pOptDesc)
+      * reset its state.
+      */
+     /* extracted from uudecode-opts.def, line 60 */
+-  FILE * fp = freopen (pOptDesc->optArg.argString, "w", stdout);
++  FILE * fp;
++  switch (*pOptDesc->optArg.argString)
++    {
++    case '-':
++      if (pOptDesc->optArg.argString[1] == '\0')
++        return;
++      break;
++
++    case '/':
++      if (strcmp (pOptDesc->optArg.argString + 1, "dev/stdout") == 0)
++        return;
++
++    default:
++      break;
++    }
++  fp = freopen (pOptDesc->optArg.argString, "w", stdout);
+   if (fp != stdout)
+     {
+       error (0, errno, "%s", pOptDesc->optArg.argString);
+diff --git a/src/uudecode-opts.def b/src/uudecode-opts.def
+index ae11b0a..419387b 100644
+--- a/src/uudecode-opts.def
++++ b/src/uudecode-opts.def
+@@ -57,7 +57,22 @@ flag = {
+     arg-name    = file;
+     descrip     = 'direct output to @file{file}';
+     flag-code   = <<- _EOCode_
+-	  FILE * fp = freopen (pOptDesc->optArg.argString, "w", stdout);
++      FILE * fp;
++      switch (*pOptDesc->optArg.argString)
++        {
++        case '-':
++          if (pOptDesc->optArg.argString[1] == '\0')
++            return;
++          break;
++
++        case '/':
++          if (strcmp (pOptDesc->optArg.argString + 1, "dev/stdout") == 0)
++            return;
++
++        default:
++          break;
++        }
++	  fp = freopen (pOptDesc->optArg.argString, "w", stdout);
+ 	  if (fp != stdout)
+ 	    {
+ 	      error (0, errno, "%s", pOptDesc->optArg.argString);
+-- 
+1.8.1
+

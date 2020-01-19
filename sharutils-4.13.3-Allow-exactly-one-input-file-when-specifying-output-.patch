@@ -1,0 +1,36 @@
+From 2e633b222dbdccfd04506a0c0028471feb101524 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20P=C3=ADsa=C5=99?= <ppisar@redhat.com>
+Date: Wed, 23 Jan 2013 13:15:18 +0100
+Subject: [PATCH] Allow exactly one input file when specifying output file
+
+This fixes regression in 4.13.3. The fix ported from 4.13.4pre2.
+<https://bugzilla.redhat.com/show_bug.cgi?id=901895>
+---
+ src/uudecode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/uudecode.c b/src/uudecode.c
+index 2ef5a92..723bcff 100644
+--- a/src/uudecode.c
++++ b/src/uudecode.c
+@@ -490,7 +490,7 @@ main (int argc, char const * const * argv)
+     exit_status = decode ("stdin");
+     break;
+ 
+-  case 1:
++  default:
+     if (HAVE_OPT(OUTPUT_FILE))
+       {
+         usage_message(_("You cannot specify an output file when processing\n\
+@@ -499,7 +499,7 @@ multiple input files.\n"));
+       }
+     /* FALLTHROUGH */
+ 
+-  default:
++  case 1:
+     while (--argc >= 0)
+       {
+         char const * f = *(argv++);
+-- 
+1.8.1
+
