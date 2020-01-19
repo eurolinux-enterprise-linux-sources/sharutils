@@ -1,0 +1,169 @@
+From 1a2570d69c1c50e2dd0f619d3791b4c77d3d8d47 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20P=C3=ADsa=C5=99?= <ppisar@redhat.com>
+Date: Tue, 4 Mar 2014 15:20:47 +0100
+Subject: [PATCH] Append new-line to usage output
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This is bug in autogen, however regenerating sources would mean to
+unbundle libopts and fix autogen. So I corrected generated sources
+instead.
+
+Take care about array length and substring offsets and values for
+gettext() coherency.
+
+Signed-off-by: Petr Písař <ppisar@redhat.com>
+---
+ src/shar-opts.c     | 14 +++++++-------
+ src/uudecode-opts.c | 14 +++++++-------
+ src/uuencode-opts.c | 14 +++++++-------
+ 3 files changed, 21 insertions(+), 21 deletions(-)
+
+diff --git a/src/shar-opts.c b/src/shar-opts.c
+index 1da4365..96223c6 100644
+--- a/src/shar-opts.c
++++ b/src/shar-opts.c
+@@ -74,7 +74,7 @@ int optidx = 0;
+ /*
+  *  shar option static const strings
+  */
+-static char const shar_opt_strs[10449] =
++static char const shar_opt_strs[10451] =
+ /*     0 */ "shar (GNU sharutils) 4.13.3\n"
+             "Copyright (C) 1994-2013 Free Software Foundation, Inc., all rights reserved.\n"
+             "This is free software. It is licensed for use, modification and\n"
+@@ -339,9 +339,9 @@ static char const shar_opt_strs[10449] =
+             "Though this program supports 'uuencode'-d files, they are deprecated.  If\n"
+             "you are emailing files, please consider mime-encoded files.  If you do\n"
+             "'uuencode', base 64 is the preferred encoding method.\n\n"
+-            "please send bug reports to:  bug-gnu-utils@gnu.org\0"
+-/* 10319 */ "shar (GNU sharutils) - create a shell archive - Ver. 4.13.3\n"
+-            "USAGE:  shar [ -<flag> [<val>] | --<name>[{=| }<val>] ]... [file ...]";
++            "please send bug reports to:  bug-gnu-utils@gnu.org\n\0"
++/* 10320 */ "shar (GNU sharutils) - create a shell archive - Ver. 4.13.3\n"
++            "USAGE:  shar [ -<flag> [<val>] | --<name>[{=| }<val>] ]... [file ...]\n";
+ 
+ /*
+  *  compression option description:
+@@ -1414,7 +1414,7 @@ static char const * const apzHomeList[2] = {
+ 
+ #define shar_full_usage (shar_opt_strs+4701)
+ 
+-#define shar_short_usage (shar_opt_strs+10319)
++#define shar_short_usage (shar_opt_strs+10320)
+ 
+ #endif /* not defined __doxygen__ */
+ 
+@@ -2145,10 +2145,10 @@ arguments.\n\n\
+ Though this program supports 'uuencode'-d files, they are deprecated.  If\n\
+ you are emailing files, please consider mime-encoded files.  If you do\n\
+ 'uuencode', base 64 is the preferred encoding method.\n\n\
+-please send bug reports to:  bug-gnu-utils@gnu.org"));
++please send bug reports to:  bug-gnu-utils@gnu.org\n"));
+   /* short-usage */
+   puts(_("shar (GNU sharutils) - create a shell archive - Ver. 4.13.3\n\
+-USAGE:  shar [ -<flag> [<val>] | --<name>[{=| }<val>] ]... [file ...]"));
++USAGE:  shar [ -<flag> [<val>] | --<name>[{=| }<val>] ]... [file ...]\n"));
+   /* explain */
+   puts(_("If no 'file's are specified, the list of input files is read from a\n\
+ standard input.  Standard input must not be a terminal"));
+diff --git a/src/uudecode-opts.c b/src/uudecode-opts.c
+index 33ebe2f..b4c6fd2 100644
+--- a/src/uudecode-opts.c
++++ b/src/uudecode-opts.c
+@@ -72,7 +72,7 @@ extern FILE * option_usage_fp;
+ /*
+  *  uudecode option static const strings
+  */
+-static char const uudecode_opt_strs[4552] =
++static char const uudecode_opt_strs[4554] =
+ /*     0 */ "uudecode (GNU sharutils) 4.13.3\n"
+             "Copyright (C) 1994-2013 Free Software Foundation, Inc., all rights reserved.\n"
+             "This is free software. It is licensed for use, modification and\n"
+@@ -159,9 +159,9 @@ static char const uudecode_opt_strs[4552] =
+             "that starts with \"'begin'\" and proceeds until the end-of-encoding marker is\n"
+             "found.  The program determines from the header line of the encoded file\n"
+             "which of the two supported encoding schemes was used.\n\n"
+-            "please send bug reports to:  bug-gnu-utils@gnu.org\0"
+-/*  4412 */ "uudecode (GNU sharutils) - decode an encoded file - Ver. 4.13.3\n"
+-            "USAGE:  uudecode [ -<flag> [<val>] | --<name>[{=| }<val>] ]... [ file ... ]";
++            "please send bug reports to:  bug-gnu-utils@gnu.org\n\0"
++/*  4413 */ "uudecode (GNU sharutils) - decode an encoded file - Ver. 4.13.3\n"
++            "USAGE:  uudecode [ -<flag> [<val>] | --<name>[{=| }<val>] ]... [ file ... ]\n";
+ 
+ /*
+  *  output-file option description:
+@@ -345,7 +345,7 @@ static char const * const apzHomeList[2] = {
+ 
+ #define uudecode_full_usage (uudecode_opt_strs+2463)
+ 
+-#define uudecode_short_usage (uudecode_opt_strs+4412)
++#define uudecode_short_usage (uudecode_opt_strs+4413)
+ 
+ #endif /* not defined __doxygen__ */
+ 
+@@ -720,10 +720,10 @@ be written to the same file as the previous output.  Don't do that.\n\n\
+ that starts with \"'begin'\" and proceeds until the end-of-encoding marker is\n\
+ found.  The program determines from the header line of the encoded file\n\
+ which of the two supported encoding schemes was used.\n\n\
+-please send bug reports to:  bug-gnu-utils@gnu.org"));
++please send bug reports to:  bug-gnu-utils@gnu.org\n"));
+   /* short-usage */
+   puts(_("uudecode (GNU sharutils) - decode an encoded file - Ver. 4.13.3\n\
+-USAGE:  uudecode [ -<flag> [<val>] | --<name>[{=| }<val>] ]... [ file ... ]"));
++USAGE:  uudecode [ -<flag> [<val>] | --<name>[{=| }<val>] ]... [ file ... ]\n"));
+   /* explain */
+   puts(_("If no 'file'(s) are provided, then standard input is decoded"));
+   /* detail */
+diff --git a/src/uuencode-opts.c b/src/uuencode-opts.c
+index 93c9570..eb791d5 100644
+--- a/src/uuencode-opts.c
++++ b/src/uuencode-opts.c
+@@ -71,7 +71,7 @@ extern char const uu_base64[64];
+ /*
+  *  uuencode option static const strings
+  */
+-static char const uuencode_opt_strs[4248] =
++static char const uuencode_opt_strs[4250] =
+ /*     0 */ "uuencode (GNU sharutils) 4.13.3\n"
+             "Copyright (C) 1994-2013 Free Software Foundation, Inc., all rights reserved.\n"
+             "This is free software. It is licensed for use, modification and\n"
+@@ -155,9 +155,9 @@ static char const uuencode_opt_strs[4248] =
+             "'Note': 'uuencode' uses buffered input and assumes that it is not hand\n"
+             "typed from a tty.  The consequence is that at a tty, you may need to hit\n"
+             "Ctl-D several times to terminate input.\n\n"
+-            "please send bug reports to:  bug-gnu-utils@gnu.org\0"
+-/*  4101 */ "uuencode (GNU sharutils) - encode a file into email friendly text - Ver. 4.13.3\n"
+-            "USAGE:  uuencode [ -<flag> | --<name> ]... [ in-file ] output-name";
++            "please send bug reports to:  bug-gnu-utils@gnu.org\n\0"
++/*  4102 */ "uuencode (GNU sharutils) - encode a file into email friendly text - Ver. 4.13.3\n"
++            "USAGE:  uuencode [ -<flag> | --<name> ]... [ in-file ] output-name\n";
+ 
+ /*
+  *  base64 option description:
+@@ -340,7 +340,7 @@ static char const * const apzHomeList[2] = {
+ 
+ #define uuencode_full_usage (uuencode_opt_strs+2306)
+ 
+-#define uuencode_short_usage (uuencode_opt_strs+4101)
++#define uuencode_short_usage (uuencode_opt_strs+4102)
+ 
+ #endif /* not defined __doxygen__ */
+ 
+@@ -695,10 +695,10 @@ standard out.\n\n\
+ 'Note': 'uuencode' uses buffered input and assumes that it is not hand\n\
+ typed from a tty.  The consequence is that at a tty, you may need to hit\n\
+ Ctl-D several times to terminate input.\n\n\
+-please send bug reports to:  bug-gnu-utils@gnu.org"));
++please send bug reports to:  bug-gnu-utils@gnu.org\n"));
+   /* short-usage */
+   puts(_("uuencode (GNU sharutils) - encode a file into email friendly text - Ver. 4.13.3\n\
+-USAGE:  uuencode [ -<flag> | --<name> ]... [ in-file ] output-name"));
++USAGE:  uuencode [ -<flag> | --<name> ]... [ in-file ] output-name\n"));
+   /* detail */
+   puts(_("'uuencode' is used to create an ASCII representation of a file that can be\n\
+ sent over channels that may otherwise corrupt the data.  Specifically,\n\
+-- 
+1.8.5.3
+

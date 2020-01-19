@@ -1,7 +1,7 @@
 Summary: The GNU shar utilities for packaging and unpackaging shell archives
 Name: sharutils
 Version: 4.13.3
-Release: 4%{?dist}
+Release: 8%{?dist}
 # The main code:                GPLv3+
 # lib (gnulib):                 LGPLv3+
 # lib/sys_socket.in.h:          LGPLv2+
@@ -16,6 +16,8 @@ URL: http://www.gnu.org/software/%{name}/
 Patch0: %{name}-4.13.3-Allow-exactly-one-input-file-when-specifying-output-.patch
 # Bug #901895, in upstream 4.13.4pre2
 Patch1: %{name}-4.13.3-Do-not-open-and-dev-stdout.patch
+# Bug #1020287, fixed in upstream 4.13.4
+Patch2: %{name}-4.13.3-Append-new-line-to-usage-output.patch
 BuildRequires: gettext
 Requires(post): info
 Requires(preun): info
@@ -39,6 +41,7 @@ shar files.
 %setup -q
 %patch0 -p1 -b .input_count
 %patch1 -p1 -b .dev_stdout
+%patch2 -p1 -b .usage_newline
 
 # convert TODO, THANKS to UTF-8
 for i in TODO THANKS; do
@@ -77,6 +80,18 @@ fi
 %{_mandir}/man5/*
 
 %changelog
+* Tue Mar 04 2014 Petr Pisar <ppisar@redhat.com> - 4.13.3-8
+- Correct fix for new line at the end of usage texts (bug #1020287)
+
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 4.13.3-7
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 4.13.3-6
+- Mass rebuild 2013-12-27
+
+* Thu Oct 17 2013 Petr Pisar <ppisar@redhat.com> - 4.13.3-5
+- Append new-line to usage output (bug #1020287)
+
 * Tue May 28 2013 Petr Pisar <ppisar@redhat.com> - 4.13.3-4
 - Correct license declaration (LGPLv3+ and (LGPLv3+ or BSD) and GFDL added)
 
